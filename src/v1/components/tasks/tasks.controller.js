@@ -137,10 +137,26 @@ const deleteTask = async (req, res, next) => {
   }
 };
 
+
+// task statistics
+const getTaskStats = async (req, res, next) => {
+  try {
+    const stats = await taskService.getTaskStats(req.user);
+
+    res.status(200).json({
+      success: true,
+      data: stats,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   createTask,
   getAllTasks,
   getSingleTask,
   updateTask,
   deleteTask,
+  getTaskStats
 };

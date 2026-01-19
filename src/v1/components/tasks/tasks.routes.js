@@ -12,6 +12,13 @@ const {
   validateRequest,
 } = require("../../../middleware");
 
+// Task statistics
+router.get(
+  "/stats",
+  authenticate,
+  tasksController.getTaskStats
+);
+
 // Create task
 router.post(
   "/",

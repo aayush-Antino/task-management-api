@@ -35,10 +35,31 @@ const deleteTask = async (taskId) => {
   if (!task) throw new Error("TASK_NOT_FOUND");
 };
 
+const getTaskStats = async (user) => {
+  const matchStage =
+    user.role === "admin"
+      ? {}
+      : { createdBy: user.id };
+
+  const stats = await Task.aggregate([
+    { $match: matchStage },
+    {
+      $group: {
+        _id: "$status",
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+
+  return stats;
+};
+
+
 module.exports = {
   createTask,
   getAllTasks,
   getTaskById,
   updateTask,
   deleteTask,
+  getTaskStats
 };
