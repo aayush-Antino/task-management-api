@@ -7,7 +7,7 @@ app.use(express.json());
 
 // Test route
 app.get("/", (req, res) => {
-  res.send("Server is running successfully 🚀");
+  res.send("Server is running successfully");
 });
 
 module.exports = app;
