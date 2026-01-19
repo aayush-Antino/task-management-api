@@ -18,7 +18,16 @@ const validateLogin = ({ email, password }) => {
   return null;
 };
 
+const validateRefresh = ({ refreshToken }) => {
+  if (!refreshToken) {
+    return "Refresh token is required";
+  }
+
+  return null;
+};
+
 module.exports = {
   validateRegister,
   validateLogin,
+  validateRefresh,
 };
