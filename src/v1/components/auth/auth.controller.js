@@ -2,11 +2,19 @@ const {
   registerUser,
   loginUser,
 } = require("./auth.service");
+
 const {
   validateRegister,
   validateLogin,
+  validateRefresh,
 } = require("./auth.validator");
 
+const {
+  generateAccessToken,
+  verifyToken,
+} = require("./jwt.utils");
+
+/* -------------------- Register -------------------- */
 const register = async (req, res) => {
   try {
     const error = validateRegister(req.body);
@@ -36,6 +44,7 @@ const register = async (req, res) => {
   }
 };
 
+/* -------------------- Login -------------------- */
 const login = async (req, res) => {
   try {
     const error = validateLogin(req.body);
@@ -65,7 +74,47 @@ const login = async (req, res) => {
   }
 };
 
+/* -------------------- Refresh Token -------------------- */
+const refresh = async (req, res) => {
+  try {
+    const error = validateRefresh(req.body);
+    if (error) {
+      return res.status(400).json({ success: false, message: error });
+    }
+
+    const { refreshToken } = req.body;
+
+    const decoded = verifyToken(refreshToken, "refresh");
+
+    const accessToken = generateAccessToken({
+      id: decoded.id,
+      email: decoded.email,
+      role: decoded.role,
+    });
+
+    return res.status(200).json({
+      success: true,
+      accessToken,
+    });
+  } catch (error) {
+    return res.status(401).json({
+      success: false,
+      message: "Invalid or expired refresh token",
+    });
+  }
+};
+
+/* -------------------- Logout -------------------- */
+const logout = async (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: "Logged out successfully",
+  });
+};
+
 module.exports = {
   register,
   login,
+  refresh,
+  logout,
 };
