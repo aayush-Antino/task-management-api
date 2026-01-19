@@ -1,4 +1,4 @@
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const User = require("../users/users.model");
 const {
   generateAccessToken,
@@ -11,13 +11,13 @@ const registerUser = async ({ name, email, password }) => {
     throw new Error("EMAIL_EXISTS");
   }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
-
+  // Pass plain password, let User model pre-save hook hash it
   const user = await User.create({
     name,
     email,
-    password: hashedPassword,
+    password,
   });
+  // console.log("User created.");
 
   return {
     id: user._id,
@@ -39,7 +39,7 @@ const loginUser = async ({ email, password }) => {
   }
 
   const payload = {
-    userId: user._id,
+    id: user._id,
     role: user.role || "user",
   };
 

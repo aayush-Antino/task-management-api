@@ -1,8 +1,7 @@
-const jwt = require("jsonwebtoken");
+const { verifyToken } = require("../utils/jwt");
 
-const authHandler = (req, res, next) => {
+const authenticate = (req, res, next) => {
   try {
-    // auth header
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -12,19 +11,11 @@ const authHandler = (req, res, next) => {
       });
     }
 
-    // Extract token
     const token = authHeader.split(" ")[1];
 
-    // Verify token
-    const decoded = jwt.verify(
-      token,
-      process.env.ACCESS_TOKEN_SECRET
-    );
+    const decoded = verifyToken(token, "access");
 
-    // Attach user info to request
     req.user = decoded;
-
-    //  Continue
     next();
   } catch (error) {
     return res.status(401).json({
@@ -34,4 +25,4 @@ const authHandler = (req, res, next) => {
   }
 };
 
-module.exports = authHandler;
+module.exports = authenticate;

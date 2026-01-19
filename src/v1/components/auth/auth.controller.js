@@ -12,7 +12,7 @@ const {
 const {
   generateAccessToken,
   verifyToken,
-} = require("./jwt.utils");
+} = require("../../../utils/jwt");
 
 /* -------------------- Register -------------------- */
 const register = async (req, res) => {
@@ -37,6 +37,7 @@ const register = async (req, res) => {
       });
     }
 
+    // console.error("Register Error:", error);
     return res.status(500).json({
       success: false,
       message: "Server error",
@@ -67,6 +68,9 @@ const login = async (req, res) => {
       });
     }
 
+    const fs = require('fs');
+    fs.appendFileSync('login_error.log', `Login Error: ${error}\n${error.stack}\n`);
+    // console.error("Login Error:", error);
     return res.status(500).json({
       success: false,
       message: "Server error",

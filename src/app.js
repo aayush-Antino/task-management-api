@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+// const swaggerUi = require("swagger-ui-express")
+// const swaggerSpec = require("../src/docs/swagger")
 
 const v1Routes = require("./routes/v1/routes");
 // const rateLimiter = require("./middleware/rate-limiter");
@@ -27,5 +29,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1", v1Routes);
 
 // app.use(errorHandler);
+
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 module.exports = app;
