@@ -38,7 +38,7 @@ router.get(
 );
 
 // Update task
-router.patch(
+router.put(
   "/:taskId",
   authenticate,
   taskIdValidator,
