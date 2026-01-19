@@ -1,10 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 
-// yet to be included
+const v1Routes = require("./routes/v1/routes");
 // const rateLimiter = require("./middleware/rate-limiter");
 // const errorHandler = require("./middleware/error-handler");
-// const v1Routes = require("./routes/v1/routes");
 
 const app = express();
 
@@ -20,13 +19,13 @@ app.use(cors());
 app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
-    message: "Server is running successfully "
+    message: "Server is running successfully",
   });
 });
 
 // API v1 routes
-// app.use("/api/v1", v1Routes);
+app.use("/api/v1", v1Routes);
 
-// app.use(errorHandler); // error handler
+// app.use(errorHandler);
 
 module.exports = app;
